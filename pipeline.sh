@@ -4,7 +4,7 @@
 # Assumes the following software versions are installed:   #
 # GNU Wget                                                 #
 # STAR v. 2.5.1b                                           #
-# samtools                                                 #
+# samtools v. 1.2                                          #
 # java v. 1.8.0                                            #
 # picard v. 1.112                                          #
 # bamtools                                                 #
@@ -166,4 +166,28 @@ do
 	prefix=${prefix%.*}
 
 	./extract_fastq.pl ${file} > ${file}.fq
+done
+
+mkdir gsnap.aln
+
+for file in ./read_lists/*.fq
+do
+	prefix=${file##*/}
+	prefix=${prefix%.*}
+	prefix=${prefix%.*}
+
+	# the --output-BP options is not in older versions of samtools
+	gsnap --trim-mismatch-score 0 -A sam -m 5 -i 2 -N 1 -D . -d hg38.gsnap ${file} > ./gsnap.aln/${prefix}.gsnap.sam
+
+	./sam_filter.pl ./gsnap.aln/${prefix}.gsnap.sam > ./gsnap.aln/${prefix}.gsnap.F.sam
+done
+
+for file in ./gsnap.aln/*.F.sam
+do
+	prefix=${file##*/}
+	prefix=${prefix%.*}
+	prefix=${prefix%.*}
+	prefix=${prefix%.*}
+
+	samtools view -T GCA_000001405.15_GRCh38_no_alt_analysis_set.fna -bS ${file} > ${file%.*}.bam
 done

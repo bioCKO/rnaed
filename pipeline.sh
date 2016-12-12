@@ -23,7 +23,7 @@ echo RNA editing pipeline
 echo Downloading the human genome GRCh38
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/archive/old_genbank/Eukaryotes/vertebrates_mammals/Homo_sapiens/GRCh38/seqs_for_alignment_pipelines/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz
 
-echo Uncompressing.
+echo Uncompressing
 gunzip GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz
 
 echo Indexing genome
@@ -48,11 +48,11 @@ mkdir split
 for file in ./mapped/*.sam
 do
 	samtools view -T GCA_000001405.15_GRCh38_no_alt_analysis_set.fna -bS ${file} > ${file%.*}.bam
-	samtools sort -m ${mem} ${file%.*}.bam ${file%.*}.S.bam
+	samtools sort -m ${MEM} ${file%.*}.bam ${file%.*}.S
 	samtools index ${file%.*}.S.bam
 	samtools rmdup -s ${file%.*}.S.bam ${file%.*}.rmdups.bam
 
-	java -Xms${mem} -Xmx4{mem} -XX:+UseSerialGC -jar AddOrReplaceReadGroups.jar I=${file%.*}.rmdups.bam O=${file%.*}.rg.bam SO=coordinate RGID=id RGLB=library RGPL=platform RGPU=machine RGSM=sample
+	java -Xms${MEM} -Xmx{MEM} -XX:+UseSerialGC -jar AddOrReplaceReadGroups.jar I=${file%.*}.rmdups.bam O=${file%.*}.rg.bam SO=coordinate RGID=id RGLB=library RGPL=platform RGPU=machine RGSM=sample
 
 	samtools index ${file%.*}.rg.bam
 
@@ -218,7 +218,7 @@ do
 	prefix=${prefix%.*}
 
 	# picard
-	java -Xms${mem} -Xmx${mem} -XX:+UseSerialGC -jar FilterSamReads.jar INPUT=./gsnap.aln/${prefix}.gsnap.F.bam FILTER=includeReadList READ_LIST_FILE=${file} OUTPUT=./gsnap.aln/${prefix}.final.bam
+	java -Xms${MEM} -Xmx${MEM} -XX:+UseSerialGC -jar FilterSamReads.jar INPUT=./gsnap.aln/${prefix}.gsnap.F.bam FILTER=includeReadList READ_LIST_FILE=${file} OUTPUT=./gsnap.aln/${prefix}.final.bam
 done
 
 for file in ./gsnap.aln/*.final.bam
@@ -229,7 +229,7 @@ do
 
 	# the --output-BP options is not in older versions of samtools
 
-	samtools sort -m ${mem} ${file} ${file%.*}.S
+	samtools sort -m ${MEM} ${file} ${file%.*}.S
 
 	samtools mpileup --output-BP -f GCA_000001405.15_GRCh38_no_alt_analysis_set.fna ${file%.*}.S.bam | perl -ne ' {
      $_ =~ /\t(\S+)\t\S+\t\S+$/;

@@ -13,6 +13,7 @@
 # BioPerl (Bio::SeqIO)                                     #
 # Perl 5                                                   #
 # gmap-2016-05-25                                          #
+# NCBI liftOver                                            #
 ############################################################
 
 THREADS=3
@@ -176,7 +177,6 @@ do
 	prefix=${prefix%.*}
 	prefix=${prefix%.*}
 
-	# the --output-BP options is not in older versions of samtools
 	gsnap --trim-mismatch-score 0 -A sam -m 5 -i 2 -N 1 -D . -d hg38.gsnap ${file} > ./gsnap.aln/${prefix}.gsnap.sam
 
 	./sam_filter.pl ./gsnap.aln/${prefix}.gsnap.sam > ./gsnap.aln/${prefix}.gsnap.F.sam
@@ -202,5 +202,154 @@ done
 
 for file in ./gsnap.aln/*.gsnap.F.bam
 do
+	prefix=${file##*/}
+	prefix=${prefix%.*}
+	prefix=${prefix%.*}
+	prefix=${prefix%.*}
+
 	./find_concordant.pl ./gsnap.aln/${prefix}.gsnap.F.bam.bed ./mapped/${prefix}.rg.bam.bed > ./gsnap.aln/${prefix}.gsnap.bam.targets
 done
+
+for file in ./gsnap.aln/*.targets
+do
+	prefix=${file##*/}
+	prefix=${prefix%.*}
+	prefix=${prefix%.*}
+	prefix=${prefix%.*}
+
+	# picard
+	java -Xms${mem} -Xmx${mem} -XX:+UseSerialGC -jar FilterSamReads.jar INPUT=./gsnap.aln/${prefix}.gsnap.F.bam FILTER=includeReadList READ_LIST_FILE=${file} OUTPUT=./gsnap.aln/${prefix}.final.bam
+done
+
+for file in ./gsnap.aln/*.final.bam
+do
+	prefix=${file##*/}
+	prefix=${prefix%.*}
+	prefix=${prefix%.*}
+
+	# the --output-BP options is not in older versions of samtools
+
+	samtools sort -m ${mem} ${file} ${file%.*}.S
+
+	samtools mpileup --output-BP -f GCA_000001405.15_GRCh38_no_alt_analysis_set.fna ${file%.*}.S.bam | perl -ne ' {
+     $_ =~ /\t(\S+)\t\S+\t\S+$/;
+     my $q = $1;
+     $q =~ s/[0-9\*\;\=\-\:\\$\~\^\<\>\,\.]//g;
+
+     if (length($q) >= 2) {
+         print("$_");
+     }
+ } ' > ${file%.*}.S.bam.mpileup
+done
+
+mkdir calls
+
+for file in ./gsnap.aln/*.mpileup
+do
+	prefix=${file##*/}
+	prefix=${prefix%.*}
+	prefix=${prefix%.*}
+	prefix=${prefix%.*}
+	prefix=${prefix%.*}
+
+	./get_RNA_editing_variants.pl ${file} > ./calls/${prefix}.calls
+done
+
+gunzip ./ref/rm.S.bed.gz
+
+(awk '$3 == "gene" {print $1"\t"($4-1)"\t"$5"\t"$10}' ./ref/gencode.v24.chr_patch_hapl_scaff.annotation.S.gtf | sed 's/[\";]//g'
+cat ./ref/rm.S.bed | grep -v rich | grep -v -P '\([ATGC]+\)n' | cut -d$'\t' -f1-4) > genes_and_repeats.bed
+
+for file in ./calls/*.calls
+do
+	awk '{print $1"\t"($2-1)"\t"$2}' $file > ${file}.bed
+done
+
+parallel -j 50 < cmds.txt
+
+for file in ./calls/*.bed
+do
+	bedtools intersect -wa -wb -a ${file} -b genes_and_repeats.bed > ${file}.intersected
+done
+
+./annotate.pl
+
+cat ./calls/*.annotated | cut -d ' ' -f1-2,4,5,10 | awk '{$3=toupper($3); $4=toupper($4); print $0}' | sort -u > feature_overlap.txt
+
+mv -v calls calls.prefinal
+mkdir calls
+
+for file in ./calls.prefinal/*.annotated
+do
+ echo $file
+
+ awk '{
+  if ($1 != "chr6") {
+    print($0)
+  }
+  else {
+    if ($2 < 28510120 || $2 > 33480577) {
+        print($0)
+    }
+  }
+ }' $file > ${file}.no_MHC
+done
+
+./remove_snps_ucsc_146.pl
+
+./remove_snps_ucsc_141.pl
+
+wget ftp://ftp.broadinstitute.org/pub/ExAC_release/release0.3.1/ExAC.r0.3.1.sites.vep.vcf.gz
+
+gunzip ExAC.r0.3.1.sites.vep.vcf.gz
+
+awk '$7 == "PASS" {
+ chr="chr"$1
+ start=$2 - 1
+ stop=$2
+
+ print(chr"\t"start"\t"stop)
+}' ExAC.r0.3.1.sites.vep.vcf > ExAC.r0.3.1.sites.vep.vcf.bed
+
+liftOver ExAC.r0.3.1.sites.vep.vcf.bed hg19ToHg38.over.chain ExAC.r0.3.1.sites.vep.vcf.GRCh38.bed unmapped.txt
+
+./remove_snps_exac.pl
+
+wget http://evs.gs.washington.edu/evs_bulk_data/ESP6500SI-V2-SSA137.GRCh38-liftover.snps_indels.txt.tar.gz
+
+gunzip ESP6500SI-V2-SSA137.GRCh38-liftover.snps_indels.txt.tar.gz
+
+tar -zxvf ESP6500SI-V2-SSA137.GRCh38-liftover.snps_indels.txt.tar.gz
+
+(awk 'NR == 8' ESP6500SI-V2-SSA137.GRCh38-liftover.chr22.snps_indels.txt
+for file in ESP6500SI-V2-SSA137.GRCh38-liftover.chr*
+do
+ cat $file | grep -v -P '^#'
+done) > ESP6500SI-V2-SSA137.GRCh38-liftover.vcf
+
+rm -v ESP6500SI-V2-SSA137.GRCh38-liftover.chr*
+
+./remove_snps_nhlbi.pl
+
+wget -r https://genomics.scripps.edu/browser/files/wellderly/vcf/
+
+for file in *.gz
+do
+ echo $file
+ zcat ${file} > ../scripps.wellderly.uncomp/${file%.*}
+done
+
+(for file in *.vcf
+do
+ awk '{
+  if (length($4) == 1 && length($5) == 1) {
+   chr="chr"$1
+   start = $2 - 1
+   stop = $2
+
+   print(chr"\t"start"\t"stop)
+ }
+}' $file
+done) > ../scripps.wellderly.bed
+
+liftOver scripps.wellderly.bed hg19ToHg38.over.chain scripps.wellderly.GRCh38.bed unmapped.txt

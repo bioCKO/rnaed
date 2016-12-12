@@ -100,25 +100,31 @@ parallel -j ${THREADS} < cmds.txt
 
 gunzip ./ref/simple_repeats.plus_minus_one_bp.bed.gz
 
-for file in ./mpileup.filt/*.mpileup.F
+(for file in ./mpileup.filt/*.mpileup.F
 do
 	p=${file##*/}
-	awk '{print $1"\t"($2-1)"\t"$2}' ${file} > ./mpileup.filt/${p}.bed
-done
+	echp "awk '{print $1"\t"($2-1)"\t"$2}' ${file} > ./mpileup.filt/${p}.bed"
+done) > cmds.txt
 
-for file in ./mpileup.filt/*.bed
+parallel -j ${THREADS} < cmds.txt
+
+(for file in ./mpileup.filt/*.bed
 do
-	bedtools intersect -v -a ${file} -b ./ref/simple_repeats.plus_minus_one_bp.bed > ${file}.no_simple_repeats
-done
+	echo "bedtools intersect -v -a ${file} -b ./ref/simple_repeats.plus_minus_one_bp.bed > ${file}.no_simple_repeats"
+done) > cmds.txt
+
+parallel -j ${THREADS} < cmds.txt
 
 ./split_by_chr.pl GCA_000001405.15_GRCh38_no_alt_analysis_set.fna
 
-for chr_no in `seq 1 22` X Y
+(for chr_no in `seq 1 22` X Y
 do
  chr=chr${chr_no}
  
- ./homopolymers.pl GCA_000001405.15_GRCh38_no_alt_analysis_set.fna_${chr} > ${chr}.hp &
-done
+ echo "./homopolymers.pl GCA_000001405.15_GRCh38_no_alt_analysis_set.fna_${chr} > ${chr}.hp"
+done) > cmds.txt
+
+parallel -j ${THREADS} < cmds.txt
 
 cat *.hp > homopolymers_5bp-length.grch38
 

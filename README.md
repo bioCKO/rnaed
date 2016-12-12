@@ -10,8 +10,18 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
    awk -F '\t' '{print $1"\t"$3}' ucsc_146.bed > ucsc_146.snps.GRCh38.final
    ```
 3. Repeat step 2, but instead for version 141. The final file should be called ucsc_141.snps.GRCh38.final.
-4. Put your *.fastq files in a directory called `fastq'.
-5. Run:
+
+4. Register and download [COSMIC](http://cancer.sanger.ac.uk/cosmic). The license of this database is not compatible with unrestricted distribution. Only the VCF files are needed. Execute:
+
+   ```
+   for file in ./COSMIC/Cosmic*
+   do
+    cat ${file} | grep -v -E '^#' | awk -F '\t' '{print $1"\t"$2}' > ${file}.C
+   done
+   ```
+
+5. Put your *.fastq files in a directory called `fastq'.
+6. Run:
 
    ```bash
    chmod +x pipeline.sh *.pl

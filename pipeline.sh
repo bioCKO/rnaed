@@ -353,3 +353,17 @@ do
 done) > ../scripps.wellderly.bed
 
 liftOver scripps.wellderly.bed hg19ToHg38.over.chain scripps.wellderly.GRCh38.bed unmapped.txt
+
+./remove_snps_wellderly.pl
+
+./removal_cosmic.pl
+
+for file in ./calls.prefinal/*.no_COSMIC
+do
+ d=${file##*/}
+ d=`echo $d | sed 's/\(.*\)\.calls.*/\1/'`
+
+ ln -sfn $file ./calls/${d}.calls
+done
+
+echo All done.

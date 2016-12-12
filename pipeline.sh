@@ -115,3 +115,25 @@ for file in ./mpileup.filt/*.no_simple_repeats
 done
 
 ./make_splice_junction_bed_file.pl > SJ.bed
+
+for file in ./mpileup.filt/*.no_homopolymers
+do
+	bedtools intersect -v -a ${file} -b SJ.bed | grep -v chrM | grep -v chrEBV > ${file}.no_SJ
+done
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b147_GRCh38p2/VCF/All_20160407.vcf.gz
+gunzip All_20160407.vcf.gz
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b147_GRCh38p2/XML/*
+
+for file in *.gz
+do
+	gunzip $file
+done
+
+for file in *.xml
+do
+	./xml_parser.pl ${file} > ${file}.cDNA_snps
+done
+
+cat *.cDNA_snps > dbSNP.cDNA_evidence_only

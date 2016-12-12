@@ -12,6 +12,7 @@
 # GNU Awk                                                  #
 # BioPerl (Bio::SeqIO)                                     #
 # Perl 5                                                   #
+# gmap-2016-05-25                                          #
 ############################################################
 
 THREADS=3
@@ -137,3 +138,8 @@ do
 done
 
 cat *.cDNA_snps > dbSNP.cDNA_evidence_only
+
+./prepare.pl
+./remove_snps.pl
+
+gmap_build -D . -d hg38.gsnap -k 15 GCA_000001405.15_GRCh38_no_alt_analysis_set.fna

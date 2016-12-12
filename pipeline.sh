@@ -79,18 +79,22 @@ done) > cmds.txt
 
 parallel -j ${THREADS} < cmds.txt
 
-for prefix in `ls mpileup | cut -d '.' -f1 | sort -u`
+(for prefix in `ls mpileup | cut -d '.' -f1 | sort -u`
 do
-	./filter.pl $prefix
-done
+	echo "./filter.pl $prefix"
+done) > cmds.txt
+
+parallel -j ${THREADS} < cmds.txt
 
 mkdir mpileup.filt
 
-for file in ./mpileup.merged/*.mpileup
+(for file in ./mpileup.merged/*.mpileup
 do
 	p=${file##*/}
-	./remove_indels.pl $file > ./mpileup.filt/${p}.F
-done
+	echo "./remove_indels.pl $file > ./mpileup.filt/${p}.F"
+done) > cmds.txt
+
+parallel -j ${THREADS} < cmds.txt
 
 gunzip ./ref/simple_repeats.plus_minus_one_bp.bed.gz
 

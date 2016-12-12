@@ -14,6 +14,7 @@
 # Perl 5                                                   #
 # gmap-2016-05-25                                          #
 # NCBI liftOver                                            #
+# GNU parallel                                             #
 ############################################################
 
 THREADS=3
@@ -61,20 +62,22 @@ do
 	bamtools split -in ${file%.*}.rg.bam -reference
 
 	# Delete sam records containing sequences mapped to contigs, etc.
-	find . -type f -name "*EBV*" | xargs -I {} rm {}
-	find . -type f -name "*chrUn*" | xargs -I {} rm {}
-	find . -type f -name "*_random*" | xargs -I {} rm {}
-	find . -type f -name "*chrM.bam" | xargs -I {} rm {}
+	find mapped -type f -name "*EBV*" | xargs -I {} rm {}
+	find mapped -type f -name "*chrUn*" | xargs -I {} rm {}
+	find mapped -type f -name "*_random*" | xargs -I {} rm {}
+	find mapped -type f -name "*chrM.bam" | xargs -I {} rm {}
 
 	mv -v ./mapped/*REF* ./split
 done
 
 mkdir mpileup
 
-for file in ./split/*.bam
+(for file in ./split/*.bam
 do
-	samtools mpileup -f GCA_000001405.15_GRCh38_no_alt_analysis_set.fna ${file} > ./mpileup/${file##*/}.mpileup.out
-done
+	echo "samtools mpileup -f GCA_000001405.15_GRCh38_no_alt_analysis_set.fna ${file} > ./mpileup/${file##*/}.mpileup.out"
+done) > cmds.txt
+
+parallel -j ${THREADS} < cmds.txt
 
 for prefix in `ls mpileup | cut -d '.' -f1 | sort -u`
 do

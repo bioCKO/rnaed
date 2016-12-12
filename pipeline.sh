@@ -79,6 +79,8 @@ done) > cmds.txt
 
 parallel -j ${THREADS} < cmds.txt
 
+mkdir mpileup.merged
+
 (for prefix in `ls mpileup | cut -d '.' -f1 | sort -u`
 do
 	echo "./filter.pl $prefix"

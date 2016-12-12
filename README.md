@@ -16,3 +16,6 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
    chmod +x pipeline.sh *.pl
    ./pipeline.sh
    ```
+
+# Contact
+* Oscar Franzén, <p.oscar.franzen@gmail.com>

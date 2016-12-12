@@ -7,7 +7,7 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
 
    Then execute:  
    ```bash
-   awk -F '\t' '{print $1"\t"$3}' ucsc_146.bed > ucsc_146.snps.GRCh38.final```  
+awk -F '\t' '{print $1"\t"$3}' ucsc_146.bed > ucsc_146.snps.GRCh38.final```  
 3. Put your *.fastq files in a directory called `fastq'.
 4. Run ```bash
 chmod +x pipeline.sh *.pl

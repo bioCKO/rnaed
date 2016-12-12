@@ -7,6 +7,7 @@
 # samtools                                                 #
 # java v. 1.8.0                                            #
 # picard v. 1.112                                          #
+# bamtools                                                 #
 ############################################################
 
 THREADS=3
@@ -36,6 +37,8 @@ do
 	STAR --genomeLoad NoSharedMemory --genomeDir ./genome.index --readFilesIn $file --readFilesCommand cat --runThreadN ${THREADS} --outStd SAM --outSAMmode Full --outFilterMultimapNmax 1 --outFilterMismatchNoverLmax 0.1 > ./mapped/${prefix}.sam
 done
 
+mkdir split
+
 for file in ./mapped/*.sam
 do
 	samtools view -T GCA_000001405.15_GRCh38_no_alt_analysis_set.fna -bS ${file} > ${file%.*}.bam
@@ -44,4 +47,24 @@ do
 	samtools rmdup -s ${file%.*}.S.bam ${file%.*}.rmdups.bam
 
 	java -Xms${mem} -Xmx4{mem} -XX:+UseSerialGC -jar AddOrReplaceReadGroups.jar I=${file%.*}.rmdups.bam O=${file%.*}.rg.bam SO=coordinate RGID=id RGLB=library RGPL=platform RGPU=machine RGSM=sample
+
+	samtools index ${file%.*}.rg.bam
+
+	# split bam files by chromosome
+	bamtools split -in ${file%.*}.rg.bam -reference
+
+	# Delete sam records containing sequences mapped to contigs, etc.
+	find . -type f -name "*EBV*" | xargs -I {} rm {}
+	find . -type f -name "*chrUn*" | xargs -I {} rm {}
+	find . -type f -name "*_random*" | xargs -I {} rm {}
+	find . -type f -name "*chrM.bam" | xargs -I {} rm {}
+
+	mv -v ./mapped/*REF* ./split
+done
+
+mkdir mpileup
+
+for file in ./split/*.bam
+do
+	samtools mpileup -f GCA_000001405.15_GRCh38_no_alt_analysis_set.fna ${file} > ./mpileup/${file##*/}.mpileup.out
 done

@@ -1,5 +1,5 @@
 # About
-This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
+This is an RNA editing pipeline that calls RNA editing events from RNA-seq data. It uses the human genome as reference, but can easily be modified to use any reference genome. The aim of this repository is to provide the code used in our corresponding article.
 
 # How to use
 1. Clone the repository:

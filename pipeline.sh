@@ -119,9 +119,8 @@ parallel -j ${THREADS} < cmds.txt
 
 (for chr_no in `seq 1 22` X Y
 do
- chr=chr${chr_no}
- 
- echo "./homopolymers.pl GCA_000001405.15_GRCh38_no_alt_analysis_set.fna_${chr} > ${chr}.hp"
+	chr=chr${chr_no}
+	echo "./homopolymers.pl GCA_000001405.15_GRCh38_no_alt_analysis_set.fna_${chr} > ${chr}.hp"
 done) > cmds.txt
 
 parallel -j ${THREADS} < cmds.txt

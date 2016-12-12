@@ -8,8 +8,8 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
    git clone https://github.com/oscar-franzen/rnaed/
    ```
 2. Install the necessary software components:
-  * GNU Wget
-  * STAR v. 2.5.1b
+  * (GNU Wget)[https://www.gnu.org/software/wget/]
+  * (STAR v. 2.5.1b)[https://github.com/alexdobin/STAR]
   * samtools v. 1.3
   * java v. 1.8.0
   * picard v. 1.112

@@ -6,7 +6,7 @@ my %dbsnp;
 
 my $prog = 0;
 
-open(fh, "/sc/orga/projects/STARNET/oscar/rna_editing/dbSNP/ucsc_141.snps.GRCh38.final") or die("Cannot open /sc/orga/projects/STARNET/oscar/rna_editing/dbSNP/ucsc_141.snps.GRCh38.final");
+open(fh, "ucsc_141.snps.GRCh38.final") or die("Cannot open ucsc_141.snps.GRCh38.final");
 
 while (my $line = <fh>) {
 	chomp($line);

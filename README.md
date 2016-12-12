@@ -17,5 +17,8 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
    ./pipeline.sh
    ```
 
+# Publication
+* Manuscript in preparation.
+
 # Contact
 * Oscar Franzén, <p.oscar.franzen@gmail.com>

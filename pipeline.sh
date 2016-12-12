@@ -68,3 +68,8 @@ for file in ./split/*.bam
 do
 	samtools mpileup -f GCA_000001405.15_GRCh38_no_alt_analysis_set.fna ${file} > ./mpileup/${file##*/}.mpileup.out
 done
+
+for prefix in `ls mpileup | cut -d '.' -f1 | sort -u`
+do
+	./filter.pl $prefix
+done

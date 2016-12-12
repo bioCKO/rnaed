@@ -6,6 +6,6 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
 2. Put your *.fastq files in a directory called `fastq'.
 3. Run
 ```bash
-chmod +x pipeline.sh
+chmod +x pipeline.sh filter.pl
 ./pipeline.sh
 ```

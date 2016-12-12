@@ -191,3 +191,16 @@ do
 
 	samtools view -T GCA_000001405.15_GRCh38_no_alt_analysis_set.fna -bS ${file} > ${file%.*}.bam
 done
+
+for file in ./gsnap.aln/*.gsnap.F.bam ./mapped/*.rg.bam
+do
+	prefix=${file##*/}
+	prefix=${prefix%.*}
+
+	bamToBed -i ${file} > ${file}.bed
+done
+
+for file in ./gsnap.aln/*.gsnap.F.bam
+do
+	./find_concordant.pl ./gsnap.aln/${prefix}.gsnap.F.bam.bed ./mapped/${prefix}.rg.bam.bed > ./gsnap.aln/${prefix}.gsnap.bam.targets
+done

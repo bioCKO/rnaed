@@ -8,6 +8,7 @@
 # java v. 1.8.0                                            #
 # picard v. 1.112                                          #
 # bamtools                                                 #
+# bedtools                                                 #
 ############################################################
 
 THREADS=3
@@ -72,4 +73,25 @@ done
 for prefix in `ls mpileup | cut -d '.' -f1 | sort -u`
 do
 	./filter.pl $prefix
+done
+
+mkdir mpileup.filt
+
+for file in ./mpileup.merged/*.mpileup
+do
+	p=${file##*/}
+	./remove_indels.pl $file > ./mpileup.filt/${p}.F
+done
+
+gunzip ./ref/simple_repeats.plus_minus_one_bp.bed.gz
+
+for file in ./mpileup.filt/*.mpileup.F
+do
+	p=${file##*/}
+	awk '{print $1"\t"($2-1)"\t"$2}' ${file} > ./mpileup.filt/${p}.bed
+done
+
+for file in ./mpileup.filt/*.bed
+do
+	bedtools intersect -v -a ${file} -b ./ref/simple_repeats.plus_minus_one_bp.bed > ${file}.no_simple_repeats
 done

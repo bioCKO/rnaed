@@ -10,17 +10,17 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
 2. Install the necessary software components:
   * [GNU Wget](https://www.gnu.org/software/wget/)
   * [STAR v. 2.5.1b](https://github.com/alexdobin/STAR)
-  * samtools v. 1.3
-  * java v. 1.8.0
-  * picard v. 1.112
-  * bamtools
-  * bedtools
+  * [samtools v. 1.3](http://www.htslib.org/download/)
+  * [java v. 1.8.0](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+  * [Picard v. 1.112](https://broadinstitute.github.io/picard/)
+  * [bamtools](https://github.com/pezmaster31/bamtools)
+  * [bedtools](http://bedtools.readthedocs.io/en/latest/)
   * GNU Awk
-  * BioPerl (Bio::SeqIO)
+  * [BioPerl (Bio::SeqIO)](http://bioperl.org/INSTALL.html)
   * Perl 5
-  * gmap-2016-05-25
-  * NCBI liftOver
-  * GNU parallel
+  * [gmap-2016-05-25](http://research-pub.gene.com/gmap/)
+  * [NCBI liftOver](http://hgdownload.soe.ucsc.edu/admin/exe/linux.x86_64/liftOver)
+  * [GNU parallel](https://www.gnu.org/software/parallel/)
 3. Prepare a file called "ucsc_146.snps.GRCh38.final", goto http://genome.ucsc.edu/cgi-bin/hgTables and select group "Variation" and track "All SNPs(146)" and Assembly "Dec. 2013(GRCh38/hg38)". In output format, choose "BED". Type in the filename ucsc_146.bed and press "Get output".  
 
    Then execute:  

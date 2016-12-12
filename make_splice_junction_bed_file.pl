@@ -4,7 +4,7 @@ use strict 'vars';
 
 my %list;
 
-open(fh, "/Users/rand/Bioinformatik/Proj/Machine_learning/ref/GENCODE_r24/gencode.v24.chr_patch_hapl_scaff.annotation.gtf") or die("Cannot open /Users/rand/Bioinformatik/Proj/Machine_learning/ref/GENCODE_r24/gencode.v24.chr_patch_hapl_scaff.annotation.gtf");
+open(fh, "./ref/gencode.v24.chr_patch_hapl_scaff.annotation.S.gtf") or die("Cannot open ./ref/gencode.v24.chr_patch_hapl_scaff.annotation.S.gtf");
 
 while (my $line = <fh>) {
 	chomp($line);

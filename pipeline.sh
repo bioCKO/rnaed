@@ -18,4 +18,14 @@ gunzip GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.gz
 echo Indexing genome
 mkdir genome.index
 
-STAR --runMode genomeGenerate --genomeDir genome.index --genomeFastaFiles GCA_000001405.15_GRCh38_no_alt_analysis_set.fna --runThreadN $THREADS --sjdbGTFfile /sc/orga/projects/STARNET/oscar/Machine_learning/ref/GENCODE_r24/gencode.v24.chr_patch_hapl_scaff.annotation.gtf
+gunzip ./ref/gencode.v24.chr_patch_hapl_scaff.annotation.S.gtf.gz
+
+STAR --runMode genomeGenerate --genomeDir genome.index --genomeFastaFiles GCA_000001405.15_GRCh38_no_alt_analysis_set.fna --runThreadN $THREADS --sjdbGTFfile ./ref/gencode.v24.chr_patch_hapl_scaff.annotation.S.gtf
+
+for file in ./fastq/*.fastq
+do
+	prefix=${file##*/}
+	prefix=${prefix%.*}
+
+	STAR --genomeLoad NoSharedMemory --genomeDir ./genome.index --readFilesIn $file --readFilesCommand cat --runThreadN $THREADS --outStd SAM --outSAMmode Full --outFilterMultimapNmax 1 --outFilterMismatchNoverLmax 0.1 > ${prefix}.sam
+done

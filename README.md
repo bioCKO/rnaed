@@ -9,8 +9,9 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
    ```bash
    awk -F '\t' '{print $1"\t"$3}' ucsc_146.bed > ucsc_146.snps.GRCh38.final
    ```
-3. Put your *.fastq files in a directory called `fastq'.
-4. Run:
+3. Repeat step 2, but instead for version 141. The final file should be called ucsc_141.snps.GRCh38.final.
+4. Put your *.fastq files in a directory called `fastq'.
+5. Run:
 
    ```bash
    chmod +x pipeline.sh *.pl

@@ -8,19 +8,19 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
    git clone https://github.com/oscar-franzen/rnaed/
    ```
 2. Install the necessary software components:
-* GNU Wget
-* STAR v. 2.5.1b
-* samtools v. 1.3
-* java v. 1.8.0
-* picard v. 1.112
-* bamtools
-* bedtools
-* GNU Awk
-* BioPerl (Bio::SeqIO)
-* Perl 5
-* gmap-2016-05-25
-* NCBI liftOver
-* GNU parallel
+  * GNU Wget
+  * STAR v. 2.5.1b
+  * samtools v. 1.3
+  * java v. 1.8.0
+  * picard v. 1.112
+  * bamtools
+  * bedtools
+  * GNU Awk
+  * BioPerl (Bio::SeqIO)
+  * Perl 5
+  * gmap-2016-05-25
+  * NCBI liftOver
+  * GNU parallel
 3. Prepare a file called "ucsc_146.snps.GRCh38.final", goto http://genome.ucsc.edu/cgi-bin/hgTables and select group "Variation" and track "All SNPs(146)" and Assembly "Dec. 2013(GRCh38/hg38)". In output format, choose "BED". Type in the filename ucsc_146.bed and press "Get output".  
 
    Then execute:  

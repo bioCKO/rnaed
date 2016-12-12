@@ -52,7 +52,8 @@ do
 	samtools index ${file%.*}.S.bam
 	samtools rmdup -s ${file%.*}.S.bam ${file%.*}.rmdups.bam
 
-	java -Xms${MEM} -Xmx{MEM} -XX:+UseSerialGC -jar AddOrReplaceReadGroups.jar I=${file%.*}.rmdups.bam O=${file%.*}.rg.bam SO=coordinate RGID=id RGLB=library RGPL=platform RGPU=machine RGSM=sample
+	# AddOrReplaceReadGroups.jar is part of Picard Tools
+	java -Xms${MEM} -Xmx${MEM} -XX:+UseSerialGC -jar AddOrReplaceReadGroups.jar I=${file%.*}.rmdups.bam O=${file%.*}.rg.bam SO=coordinate RGID=id RGLB=library RGPL=platform RGPU=machine RGSM=sample
 
 	samtools index ${file%.*}.rg.bam
 

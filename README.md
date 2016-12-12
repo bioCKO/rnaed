@@ -7,16 +7,29 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
    ```
    git clone https://github.com/oscar-franzen/rnaed/
    ```
-1. Install the necessary software components (listed in the top of pipeline.sh).
-2. Prepare a file called "ucsc_146.snps.GRCh38.final", goto http://genome.ucsc.edu/cgi-bin/hgTables and select group "Variation" and track "All SNPs(146)" and Assembly "Dec. 2013(GRCh38/hg38)". In output format, choose "BED". Type in the filename ucsc_146.bed and press "Get output".  
+2. Install the necessary software components:
+* GNU Wget
+* STAR v. 2.5.1b
+* samtools v. 1.3
+* java v. 1.8.0
+* picard v. 1.112
+* bamtools
+* bedtools
+* GNU Awk
+* BioPerl (Bio::SeqIO)
+* Perl 5
+* gmap-2016-05-25
+* NCBI liftOver
+* GNU parallel
+3. Prepare a file called "ucsc_146.snps.GRCh38.final", goto http://genome.ucsc.edu/cgi-bin/hgTables and select group "Variation" and track "All SNPs(146)" and Assembly "Dec. 2013(GRCh38/hg38)". In output format, choose "BED". Type in the filename ucsc_146.bed and press "Get output".  
 
    Then execute:  
    ```bash
    awk -F '\t' '{print $1"\t"$3}' ucsc_146.bed > ucsc_146.snps.GRCh38.final
    ```
-3. Repeat step 2, but instead for version 141. The final file should be called ucsc_141.snps.GRCh38.final.
+4. Repeat step 2, but instead for version 141. The final file should be called ucsc_141.snps.GRCh38.final.
 
-4. Register and download [COSMIC](http://cancer.sanger.ac.uk/cosmic). The license of this database is not compatible with unrestricted distribution. Only the VCF files are needed. Put all files in a directory called `COSMIC`. Execute:
+5. Register and download [COSMIC](http://cancer.sanger.ac.uk/cosmic). The license of this database is not compatible with unrestricted distribution. Only the VCF files are needed. Put all files in a directory called `COSMIC`. Execute:
 
    ```
    for file in ./COSMIC/Cosmic*
@@ -25,8 +38,8 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
    done
    ```
 
-5. Put your *.fastq files in a directory called `fastq'.
-6. Run:
+6. Put your *.fastq files in a directory called `fastq'.
+7. Run:
 
    ```bash
    chmod +x pipeline.sh *.pl

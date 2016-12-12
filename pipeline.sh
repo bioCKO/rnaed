@@ -9,6 +9,9 @@
 # picard v. 1.112                                          #
 # bamtools                                                 #
 # bedtools                                                 #
+# GNU Awk                                                  #
+# BioPerl (Bio::SeqIO)                                     #
+# Perl 5                                                   #
 ############################################################
 
 THREADS=3
@@ -95,3 +98,14 @@ for file in ./mpileup.filt/*.bed
 do
 	bedtools intersect -v -a ${file} -b ./ref/simple_repeats.plus_minus_one_bp.bed > ${file}.no_simple_repeats
 done
+
+./split_by_chr.pl GCA_000001405.15_GRCh38_no_alt_analysis_set.fna
+
+for chr_no in `seq 1 22` X Y
+do
+ chr=chr${chr_no}
+ 
+ ./homopolymers.pl GCA_000001405.15_GRCh38_no_alt_analysis_set.fna_${chr} > ${chr}.hp &
+done
+
+cat *.hp > homopolymers_5bp-length.grch38

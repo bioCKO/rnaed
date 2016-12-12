@@ -143,3 +143,27 @@ cat *.cDNA_snps > dbSNP.cDNA_evidence_only
 ./remove_snps.pl
 
 gmap_build -D . -d hg38.gsnap -k 15 GCA_000001405.15_GRCh38_no_alt_analysis_set.fna
+
+mkdir read_lists
+
+for file in ./mpileup.filt/*.no_dbSNP
+do
+	prefix=${file##*/}
+	prefix=${prefix%.*}
+	prefix=${prefix%.*}
+	prefix=${prefix%.*}
+	prefix=${prefix%.*}
+	prefix=${prefix%.*}
+	prefix=${prefix%.*}
+	prefix=${prefix%.*}
+
+	samtools view -L ${file} ./mapped/${prefix}.rg.bam | awk '{print $1}' | sort -u > ./read_lists/${prefix}.read_list
+done
+
+for file in ./read_lists/*.read_list
+do
+	prefix=${file##*/}
+	prefix=${prefix%.*}
+
+	./extract_fastq.pl ${file} > ${file}.fq
+done

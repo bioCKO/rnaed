@@ -4,7 +4,7 @@
 # Assumes the following software versions are installed:   #
 # GNU Wget                                                 #
 # STAR v. 2.5.1b                                           #
-# samtools v. 1.2                                          #
+# samtools v. 1.3                                          #
 # java v. 1.8.0                                            #
 # picard v. 1.112                                          #
 # bamtools                                                 #

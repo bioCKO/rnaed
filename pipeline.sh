@@ -117,6 +117,11 @@ parallel -j ${THREADS} < cmds.txt
 
 ./split_by_chr.pl GCA_000001405.15_GRCh38_no_alt_analysis_set.fna
 
+find . -type f -name "*EBV*" | xargs -I {} rm {}
+find . -type f -name "*chrUn*" | xargs -I {} rm {}
+find . -type f -name "*_random*" | xargs -I {} rm {}
+find . -type f -name "*chrM.bam" | xargs -I {} rm {}
+
 (for chr_no in `seq 1 22` X Y
 do
 	chr=chr${chr_no}

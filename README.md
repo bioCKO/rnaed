@@ -11,7 +11,7 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
    ```
 3. Repeat step 2, but instead for version 141. The final file should be called ucsc_141.snps.GRCh38.final.
 
-4. Register and download [COSMIC](http://cancer.sanger.ac.uk/cosmic). The license of this database is not compatible with unrestricted distribution. Only the VCF files are needed. Execute:
+4. Register and download [COSMIC](http://cancer.sanger.ac.uk/cosmic). The license of this database is not compatible with unrestricted distribution. Only the VCF files are needed. Put all files in a directory called `COSMIC`. Execute:
 
    ```
    for file in ./COSMIC/Cosmic*

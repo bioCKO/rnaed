@@ -132,9 +132,15 @@ parallel -j ${THREADS} < cmds.txt
 
 cat *.hp > homopolymers_5bp-length.grch38
 
-for file in ./mpileup.filt/*.no_simple_repeats
-	bedtools intersect -v -a ${file} -b homopolymers_5bp-length.grch38 > ${file}.no_homopolymers
-done
+rm -v *.hp
+rm -v GCA_000001405.15_GRCh38_no_alt_analysis_set.fna_*
+
+(for file in ./mpileup.filt/*.no_simple_repeats
+do
+	echo "bedtools intersect -v -a ${file} -b homopolymers_5bp-length.grch38 > ${file}.no_homopolymers"
+done) > cmds.txt
+
+parallel -j ${THREADS} < cmds.txt
 
 ./make_splice_junction_bed_file.pl > SJ.bed
 

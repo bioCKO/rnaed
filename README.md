@@ -23,7 +23,7 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
   * [GNU parallel](https://www.gnu.org/software/parallel/)
 
   Optional:
-  * [htseq](http://www-huber.embl.de/HTSeq/doc/count.html)
+  * [htseq](http://www-huber.embl.de/HTSeq/doc/count.html)  
 This bash script reports missing dependencies (except Picard):
 ```bash
 chmod +x check_missing.sh

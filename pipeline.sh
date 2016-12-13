@@ -399,3 +399,4 @@ do
 done
 
 echo All done.
+echo If everything worked the final files are in:  `pwd`/calls/

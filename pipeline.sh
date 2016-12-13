@@ -152,14 +152,16 @@ done) > cmds.txt
 parallel -j ${THREADS} < cmds.txt
 
 wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b147_GRCh38p2/VCF/All_20160527.vcf.gz
-gunzip All_20160407.vcf.gz
+gunzip All_20160527.vcf.gz
 
 wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b147_GRCh38p2/XML/*
 
-for file in *.gz
+(for file in ds_*.xml.gz
 do
-	gunzip $file
-done
+	echo "gunzip $file"
+done) > cmds.txt
+
+parallel -j ${THREADS} < cmds.txt
 
 for file in *.xml
 do

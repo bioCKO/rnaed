@@ -24,7 +24,6 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
 
   Optional:
   * [htseq](http://www-huber.embl.de/HTSeq/doc/count.html)
-
 This bash script reports missing dependencies (except Picard):
 ```bash
 chmod +x check_missing.sh

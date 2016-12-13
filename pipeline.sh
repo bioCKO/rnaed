@@ -193,13 +193,15 @@ do
 	samtools view -L ${file} ./mapped/${prefix}.rg.bam | awk '{print $1}' | sort -u > ./read_lists/${prefix}.read_list
 done
 
-for file in ./read_lists/*.read_list
+(for file in ./read_lists/*.read_list
 do
 	prefix=${file##*/}
 	prefix=${prefix%.*}
 
-	./extract_fastq.pl ${file} > ${file}.fq
-done
+	echo "./extract_fastq.pl ${file} > ${file}.fq"
+done) > cmds.txt
+
+parallel -j ${THREADS} < cmds.txt
 
 mkdir gsnap.aln
 

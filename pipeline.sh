@@ -343,7 +343,7 @@ awk '$7 == "PASS" {
  print(chr"\t"start"\t"stop)
 }' ExAC.r0.3.1.sites.vep.vcf > ExAC.r0.3.1.sites.vep.vcf.bed
 
-liftOver ExAC.r0.3.1.sites.vep.vcf.bed hg19ToHg38.over.chain ExAC.r0.3.1.sites.vep.vcf.GRCh38.bed unmapped.txt
+liftOver ExAC.r0.3.1.sites.vep.vcf.bed ./ref/hg19ToHg38.over.chain ExAC.r0.3.1.sites.vep.vcf.GRCh38.bed unmapped.txt
 
 ./remove_snps_exac.pl
 

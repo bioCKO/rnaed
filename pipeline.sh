@@ -163,10 +163,12 @@ done) > cmds.txt
 
 parallel -j ${THREADS} < cmds.txt
 
-for file in *.xml
+(for file in *.xml
 do
-	./xml_parser.pl ${file} > ${file}.cDNA_snps
-done
+	echo "./xml_parser.pl ${file} > ${file}.cDNA_snps"
+done) > cmds.txt
+
+parallel -j ${THREADS} < cmds.txt
 
 cat *.cDNA_snps > dbSNP.cDNA_evidence_only
 

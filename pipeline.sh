@@ -299,12 +299,12 @@ do
 	awk '{print $1"\t"($2-1)"\t"$2}' $file > ${file}.bed
 done
 
-parallel -j 50 < cmds.txt
-
-for file in ./calls/*.bed
+(for file in ./calls/*.bed
 do
-	bedtools intersect -wa -wb -a ${file} -b genes_and_repeats.bed > ${file}.intersected
-done
+	echo "bedtools intersect -wa -wb -a ${file} -b genes_and_repeats.bed > ${file}.intersected"
+done) > cmds.txt
+
+parallel -j ${THREADS} < cmds.txt
 
 ./annotate.pl
 

@@ -5,7 +5,7 @@ use strict 'vars';
 # Record the strand of genomic features
 my %genomic_features_strand;
 
-open(fh, "rm.S.bed") or die("Cannot open rm.S.bed");
+open(fh, "./ref/rm.S.bed") or die("Cannot open ./ref/rm.S.bed");
 
 while (my $line = <fh>) {
 	chomp($line);

@@ -390,7 +390,7 @@ liftOver scripps.wellderly.bed hg19ToHg38.over.chain scripps.wellderly.GRCh38.be
 
 ./removal_cosmic.pl
 
-for file in ./calls.prefinal/*.no_COSMIC
+for file in `pwd`/calls.prefinal/*.no_COSMIC
 do
  d=${file##*/}
  d=`echo $d | sed 's/\(.*\)\.calls.*/\1/'`

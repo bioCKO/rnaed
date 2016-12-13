@@ -211,7 +211,7 @@ do
 	prefix=${prefix%.*}
 	prefix=${prefix%.*}
 
-	gsnap --trim-mismatch-score 0 -A sam -m 5 -i 2 -N 1 -D . -d hg38.gsnap ${file} > ./gsnap.aln/${prefix}.gsnap.sam
+	gsnap -t ${THREADS} --trim-mismatch-score 0 -A sam -m 5 -i 2 -N 1 -D . -d hg38.gsnap ${file} > ./gsnap.aln/${prefix}.gsnap.sam
 
 	./sam_filter.pl ./gsnap.aln/${prefix}.gsnap.sam > ./gsnap.aln/${prefix}.gsnap.F.sam
 done

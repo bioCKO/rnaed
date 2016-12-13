@@ -7,7 +7,7 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
    ```
    git clone https://github.com/oscar-franzen/rnaed/
    ```
-2. Install software dependencies:
+2. Install software dependencies. The tools should be in your ```$PATH```.
   * [GNU Wget](https://www.gnu.org/software/wget/)
   * [STAR v. 2.5.1b](https://github.com/alexdobin/STAR)
   * [samtools v. 1.3](http://www.htslib.org/download/)

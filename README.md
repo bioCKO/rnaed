@@ -55,6 +55,17 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
    chmod +x pipeline.sh *.pl
    ./pipeline.sh
    ```
+9. If everything worked, the called event will be in `./calls/`. One file for each fastq file. Each output file has has the following columns:
+  * chromosome
+  * position
+  * editing depth
+  * reference base
+  * edited base
+  * the pileup
+  * total depth
+  * position in sequencing read. The format is position:number of reads.
+  * strand. Only relevant for strand-specific sequencing.
+  * overlapping annotation(s) (e.g., gene, repeat)
 
 # Publication
 * Manuscript in preparation.

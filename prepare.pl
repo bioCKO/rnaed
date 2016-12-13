@@ -16,7 +16,7 @@ while (my $line = <fh>) {
 
 close(fh);
 
-open(fh, "All_20160407.vcf") or die("Cannot open All_20160407.vcf");
+open(fh, "All_20160527.vcf") or die("Cannot open All_20160527.vcf");
 
 while (my $line = <fh>) {
 	chomp($line);

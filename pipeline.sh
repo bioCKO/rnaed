@@ -286,7 +286,7 @@ do
 	prefix=${prefix%.*}
 	prefix=${prefix%.*}
 
-	./get_RNA_editing_variants.pl ${file} > ./calls/${prefix}.calls
+	./get_rna_editing_variants.pl ${file} > ./calls/${prefix}.calls
 done
 
 gunzip ./ref/rm.S.bed.gz

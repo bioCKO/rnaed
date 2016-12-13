@@ -308,8 +308,6 @@ parallel -j ${THREADS} < cmds.txt
 
 ./annotate.pl
 
-cat ./calls/*.annotated | cut -d ' ' -f1-2,4,5,10 | awk '{$3=toupper($3); $4=toupper($4); print $0}' | sort -u > feature_overlap.txt
-
 mv -v calls calls.prefinal
 mkdir calls
 

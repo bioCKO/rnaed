@@ -21,7 +21,7 @@ my $sample = @ARGV[0];
 $sample =~ /\.\/read_lists\/(\S+)\.read_list/;
 $sample = $1;
 
-my $fq = "./data.merged/$sample" . ".fastq";
+my $fq = "./fastq/$sample" . ".fastq";
 
 open(fh, $fq) or die("Cannot open $fq");
 

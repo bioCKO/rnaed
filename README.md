@@ -47,7 +47,7 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
   * number of reads mapping in the reverse direction on protein-coding exons
   * sequence read length
 
-   One way is to use the program htseq to retrieve the counts.
+   One way to retrieve the counts is to use the program htseq.
 7. Put your *.fastq files in a directory called `fastq'.
 8. Run:
 

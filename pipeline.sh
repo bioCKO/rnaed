@@ -144,12 +144,14 @@ parallel -j ${THREADS} < cmds.txt
 
 ./make_splice_junction_bed_file.pl > SJ.bed
 
-for file in ./mpileup.filt/*.no_homopolymers
+(for file in ./mpileup.filt/*.no_homopolymers
 do
-	bedtools intersect -v -a ${file} -b SJ.bed | grep -v chrM | grep -v chrEBV > ${file}.no_SJ
-done
+	echo "bedtools intersect -v -a ${file} -b SJ.bed | grep -v chrM | grep -v chrEBV > ${file}.no_SJ"
+done) > cmds.txt
 
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b147_GRCh38p2/VCF/All_20160407.vcf.gz
+parallel -j ${THREADS} < cmds.txt
+
+wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b147_GRCh38p2/VCF/All_20160527.vcf.gz
 gunzip All_20160407.vcf.gz
 
 wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b147_GRCh38p2/XML/*

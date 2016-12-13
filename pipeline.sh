@@ -49,7 +49,7 @@ mkdir split
 for file in ./mapped/*.sam
 do
 	samtools view -T GCA_000001405.15_GRCh38_no_alt_analysis_set.fna -bS ${file} > ${file%.*}.bam
-	samtools sort -m ${MEM} ${file%.*}.bam ${file%.*}.S
+	samtools sort -m ${MEM} ${file%.*}.bam -o ${file%.*}.S.bam
 	samtools index ${file%.*}.S.bam
 	samtools rmdup -s ${file%.*}.S.bam ${file%.*}.rmdups.bam
 
@@ -263,7 +263,7 @@ do
 
 	# the --output-BP options is not in older versions of samtools
 
-	samtools sort -m ${MEM} ${file} ${file%.*}.S
+	samtools sort -m ${MEM} ${file} -o ${file%.*}.S.bam
 
 	samtools mpileup --output-BP -f GCA_000001405.15_GRCh38_no_alt_analysis_set.fna ${file%.*}.S.bam | perl -ne ' {
      $_ =~ /\t(\S+)\t\S+\t\S+$/;

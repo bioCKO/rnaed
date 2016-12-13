@@ -172,7 +172,7 @@ parallel -j ${THREADS} < cmds.txt
 
 cat *.cDNA_snps > dbSNP.cDNA_evidence_only
 
-./prepare.pl
+./prepare.pl > All_20160527.vcf.chr_and_pos
 ./remove_snps.pl
 
 gmap_build -D . -d hg38.gsnap -k 15 GCA_000001405.15_GRCh38_no_alt_analysis_set.fna

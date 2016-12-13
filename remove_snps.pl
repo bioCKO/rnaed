@@ -6,7 +6,7 @@ my %dbsnp;
 
 my $prog = 0;
 
-open(fh, "./dbSNP/All_20160407.vcf.chr_and_pos") or die("Cannot open ./dbSNP/All_20160407.vcf.chr_and_pos");
+open(fh, "All_20160527.vcf.chr_and_pos") or die("Cannot open All_20160527.vcf.chr_and_pos");
 
 while (my $line = <fh>) {
 	chomp($line);

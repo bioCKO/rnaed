@@ -38,8 +38,9 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
    done
    ```
 
-6. Put your *.fastq files in a directory called `fastq'.
-7. Run:
+6. Prepare a file named `mapping_bias.final.txt`.
+7. Put your *.fastq files in a directory called `fastq'.
+8. Run:
 
    ```bash
    chmod +x pipeline.sh *.pl

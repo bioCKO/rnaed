@@ -74,7 +74,7 @@ This is an RNA editing pipeline that calls RNA editing events from RNA-seq data.
   * overlapping annotation(s) (e.g., gene, repeat)
 
 # Publication
-* Manuscript in preparation.
+* Franzén O, Ermel R, Sukhavasi K, Jain R, Jain A, Betsholtz C, Giannarelli C, Kovacic JC, Ruusalepp A, Skogsberg J, Hao K, Schadt EE, Björkegren JLM. (2018) Global analysis of A-to-I RNA editing reveals association with common disease variants. PeerJ 6:e4466 https://doi.org/10.7717/peerj.4466
 
 # Contact
 * Oscar Franzén, <p.oscar.franzen@gmail.com>
